@@ -1,0 +1,75 @@
+# Build artifacts
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET temporary files
+*.vspscc
+.vs/
+.vscode/
+
+# Rider and JetBrains
+.idea/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Entity Framework Migrations
+Migrations/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# SQL Server database files
+*.mdf
+*.ldf
+
+# Logs
+*.log
+
+# Web user secrets (used with `dotnet user-secrets`)
+secrets.json
+
+# .NET Core
+project.assets.json
+project.lock.json
+project.fragment.lock.json
+
+# Visual Studio Code
+.vscode/
+
+# DotNet CLI
+*.dbmdl
+
+# Coverage reports
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+*.codecov
+*.lcov
+
+# Local development config
+appsettings.*.json
+# Keep the base config file under source control
+!appsettings.json  
+*.env
+
+# Mac OS and Linux files
+.DS_Store
+*.swp
+
+# Node artifacts (if using frontend in same repo)
+node_modules/
+dist/

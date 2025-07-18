@@ -1,0 +1,6 @@
+@MythsApi.Api_HostAddress = http://localhost:5053
+
+GET {{MythsApi.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
