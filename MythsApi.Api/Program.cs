@@ -38,7 +38,7 @@ app.Services.InitializeAndSeedDBIfNotFound();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
     //  app.MapOpenApi();
     //// Serve the generated Swagger JSON and Swagger UI
