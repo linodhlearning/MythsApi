@@ -4,9 +4,8 @@ using MythsApi.Application.Interfaces;
 
 namespace MythsApi.Api.Controllers
 {
-
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/myths")]
     public class MythsController : ControllerBase
     {
         private readonly IMythService _service;

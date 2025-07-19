@@ -1,61 +1,55 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MythsApi.Application.Interfaces;
 using MythsApi.Application.Model;
 using MythsApi.Core.Entities;
-using MythsApi.Infrastructure.Data;
-
+using MythsApi.Core.Specification;
 namespace MythsApi.Infrastructure.Services
 {
     public class MythService : IMythService
     {
-        private readonly MythsDbContext _context;
+        private readonly IMythRepository _repository;
         private readonly IMapper _mapper;
 
-        public MythService(MythsDbContext context, IMapper mapper)
+        public MythService(IMythRepository repository, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<MythModel>> GetAllAsync()
         {
-            var myths = await _context.Myths.Include(m => m.Deity).ToListAsync();
+            var myths = await _repository.ListAsync(new MythWithDeitySpecification());
             return _mapper.Map<IEnumerable<MythModel>>(myths);
         }
 
         public async Task<MythModel?> GetByIdAsync(int id)
         {
-            var myth = await _context.Myths.FindAsync(id);
+            var myth = await _repository.GetAsync(new MythWithDeitySpecification(id));
             return myth == null ? null : _mapper.Map<MythModel>(myth);
         }
 
         public async Task<MythModel> CreateAsync(MythModel dto)
         {
             var myth = _mapper.Map<Myth>(dto);
-            _context.Myths.Add(myth);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(myth);
             return _mapper.Map<MythModel>(myth);
         }
 
         public async Task UpdateAsync(int id, MythModel dto)
         {
-            var myth = await _context.Myths.FindAsync(id);
-            if (myth != null)
+            var existing = await _repository.GetAsync(new MythWithDeitySpecification(id));
+            if (existing != null)
             {
-                _mapper.Map(dto, myth);
-                await _context.SaveChangesAsync();
+                _mapper.Map(dto, existing);
+                await _repository.UpdateAsync(existing);
             }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var myth = await _context.Myths.FindAsync(id);
-            if (myth != null)
-            {
-                _context.Myths.Remove(myth);
-                await _context.SaveChangesAsync();
-            }
+            var existing = await _repository.GetAsync(new MythWithDeitySpecification(id));
+            if (existing != null)
+                await _repository.DeleteAsync(existing);
         }
     }
 }
