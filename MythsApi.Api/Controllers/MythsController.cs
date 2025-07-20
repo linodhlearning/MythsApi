@@ -26,12 +26,18 @@ namespace MythsApi.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MythModel myth) => Ok(await _service.CreateAsync(myth));
+        public async Task<IActionResult> Create([FromBody] MythCreateModel model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var createdMyth = await _service.CreateAsync(model);
+            return CreatedAtAction(nameof(Get), new { id = createdMyth.Id }, createdMyth);
+        }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] MythModel myth)
+        public async Task<IActionResult> Update(int id, [FromBody] MythUpdateModel model)
         {
-            await _service.UpdateAsync(id, myth);
+            if (id != model.Id) return BadRequest();
+            await _service.UpdateAsync(id, model);
             return NoContent();
         }
 

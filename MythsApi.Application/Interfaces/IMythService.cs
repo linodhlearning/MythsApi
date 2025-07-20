@@ -5,8 +5,8 @@ namespace MythsApi.Application.Interfaces
     {
         Task<IEnumerable<MythModel>> GetAllAsync();
         Task<MythModel?> GetByIdAsync(int id);
-        Task<MythModel> CreateAsync(MythModel myth);
-        Task UpdateAsync(int id, MythModel myth);
+        Task<MythModel> CreateAsync(MythCreateModel model);
+        Task UpdateAsync(int id, MythUpdateModel model);
         Task DeleteAsync(int id);
     }
 }

@@ -28,14 +28,14 @@ namespace MythsApi.Infrastructure.Services
             return myth == null ? null : _mapper.Map<MythModel>(myth);
         }
 
-        public async Task<MythModel> CreateAsync(MythModel dto)
+        public async Task<MythModel> CreateAsync(MythCreateModel dto)
         {
             var myth = _mapper.Map<Myth>(dto);
             await _repository.AddAsync(myth);
             return _mapper.Map<MythModel>(myth);
         }
 
-        public async Task UpdateAsync(int id, MythModel dto)
+        public async Task UpdateAsync(int id, MythUpdateModel dto)
         {
             var existing = await _repository.GetAsync(new MythWithDeitySpecification(id));
             if (existing != null)

@@ -9,6 +9,12 @@ namespace MythsApi.Infrastructure.Mapping
         public MythMapperProfile()
         {
             CreateMap<Myth, MythModel>().ReverseMap();
+
+            CreateMap<Myth, MythModel>()
+             .ForMember(dest => dest.DeityName, opt => opt.MapFrom(src => src.Deity.Name));
+
+            CreateMap<MythCreateModel, Myth>().ReverseMap();
+            CreateMap<MythUpdateModel, Myth>().ReverseMap();
         }
     }
 }
