@@ -1,0 +1,29 @@
+jobs:
+- job: BuildAndPublish
+  displayName: Build and Publish .NET API
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  variables:
+    buildConfiguration: 'Release'
+    apiProject: 'MythsApi.Api/MythsApi.Api.csproj'
+    publishDir: '$(Build.ArtifactStagingDirectory)/publish'
+
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '9.0.x'
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - script: dotnet restore
+    displayName: Restore packages
+
+  - script: dotnet build --no-restore --configuration $(buildConfiguration)
+    displayName: Build solution
+
+  - script: dotnet publish $(apiProject) --no-restore --configuration $(buildConfiguration) --output $(publishDir)
+    displayName: Publish API
+
+  - publish: '$(publishDir)'
+    artifact: drop

@@ -1,0 +1,21 @@
+jobs:
+- deployment: DeployWebApp
+  displayName: Deploy to Azure Web App
+  environment: 'development'  #This links to the DevOps environment
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: drop
+
+        - task: AzureWebApp@1
+          displayName: 'Deploy to Azure Web App'
+          inputs:
+            azureSubscription: '$(azureSubscription)'
+            appType: 'webApp'
+            appName: '$(appName)'
+            package: '$(Pipeline.Workspace)/drop/**/*.zip'
