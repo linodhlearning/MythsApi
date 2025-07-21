@@ -3,6 +3,10 @@ bin/
 obj/
 out/
 
+# Ignore publish profile files
+*.pubxml
+profile.arm.json
+
 # User-specific files
 *.user
 *.suo

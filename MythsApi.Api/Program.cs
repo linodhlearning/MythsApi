@@ -58,10 +58,10 @@ app.Services.InitializeAndSeedDBIfNotFound(useInSQLDb);
 if (app.Environment.IsDevelopment())
 {
     //// Serve the generated Swagger JSON and Swagger UI
-    app.UseSwagger(); // Serves /swagger/v1/swagger.json
+    app.UseSwagger();  
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My Myths API V1");
         options.RoutePrefix = "swagger"; // Access UI at /swagger
     });
 }
