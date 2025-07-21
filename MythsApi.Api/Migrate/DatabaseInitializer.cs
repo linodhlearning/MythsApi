@@ -6,13 +6,21 @@ namespace MythsApi.Api.Migrate
 {
     public static class DatabaseInitializer
     {
-        public static void InitializeAndSeedDBIfNotFound(this  IServiceProvider serviceProvider)
+        public static void InitializeAndSeedDBIfNotFound(this  IServiceProvider serviceProvider,bool useSqlDB)
         {
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<MythsDbContext>();
+            if (useSqlDB)
+            {
 
-            // Apply any pending migrations
-            context.Database.Migrate();
+                // Apply any pending migrations
+                context.Database.Migrate();
+            }
+            else
+            {
+                // For InMemory, no migration is needed — just ensure database is created
+                context.Database.EnsureCreated();
+            }
 
             // Seed data if not already present
             if (context.Pantheons.Any()) return;
@@ -27,7 +35,7 @@ namespace MythsApi.Api.Migrate
 
             var deities = new List<Deity>
                 {
-              new() { Name = "Zeus", Gender = "Male", Description = "Sky god", PantheonId = greek.Id },
+                new() { Name = "Zeus", Gender = "Male", Description = "Sky god", PantheonId = greek.Id },
                 new() { Name = "Athena", Gender = "Female", Description = "Wisdom and war", PantheonId = greek.Id },
                 new() { Name = "Apollo", Gender = "Male", Description = "God of sun and music", PantheonId = greek.Id },
                 new() { Name = "Artemis", Gender = "Female", Description = "Goddess of the hunt", PantheonId = greek.Id },
@@ -44,10 +52,10 @@ namespace MythsApi.Api.Migrate
 
             context.Deities.AddRange(deities);
             context.SaveChanges();
-
+            var inMemoryIndicator = useSqlDB ? "" : "-in memory db";
             context.Myths.AddRange(
             // Greek
-            new Myth { Title = "Birth of Athena", Story = "Sprang from Zeus’s head.", Region = "Greek", OriginPeriod = "Ancient Greece", DeityId = deities[1].Id },
+            new Myth { Title = $"Birth of Athena {inMemoryIndicator}", Story = "Sprang from Zeus’s head.", Region = "Greek", OriginPeriod = "Ancient Greece", DeityId = deities[1].Id },
             new Myth { Title = "Apollo and the Python", Story = "Apollo slays the python to claim Delphi.", Region = "Greek", OriginPeriod = "Ancient Greece", DeityId = deities[2].Id },
             new Myth { Title = "Artemis and Actaeon", Story = "Actaeon sees Artemis bathing and is turned into a stag.", Region = "Greek", OriginPeriod = "Ancient Greece", DeityId = deities[3].Id },
 
