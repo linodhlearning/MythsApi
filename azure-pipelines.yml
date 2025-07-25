@@ -12,4 +12,11 @@ stages:
     dependsOn: Build
     condition: succeeded()
     jobs:
-      - template: azure-pipelines-deploy.yml
+        - deployment: DeployJob
+          displayName: 'Deploy to development'
+          environment: 'development' # trigger for approval
+          strategy:
+              runOnce:
+                deploy: 
+                    steps:
+                    - template: azure-pipelines-deploy.yml

@@ -1,5 +1,6 @@
 
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
+using MythsApi.Api.Endpoints;
 using MythsApi.Api.Migrate;
 using MythsApi.Application.Interfaces;
 using MythsApi.Infrastructure.Data;
@@ -25,7 +26,7 @@ else
 }
 
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -48,7 +49,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
-var app = builder.Build();
+var app = builder.Build(); 
 
 // Initialize the database (migrate and seed)
 app.Services.InitializeAndSeedDBIfNotFound(useInSQLDb);
@@ -67,6 +68,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapMythEndpoints();
+
 //app.UseAuthorization();
-app.MapControllers();
+//app.MapControllers();
 app.Run();
