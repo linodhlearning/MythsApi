@@ -22,7 +22,7 @@ stages:
               deploy:
                 steps:
                   - script: echo "This is a dummy deployment for testing purposes."
-                    displayName: 'Echo Deployment Message'
+                    displayName: 'Echo Deployment Message '
         # - deployment: DeployJob
         #   displayName: 'Deploy to development'
         #   environment: 'development' # trigger for approval
