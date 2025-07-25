@@ -6,7 +6,7 @@ trigger:
 stages:
   - stage: Build
     jobs:
-      - template: azure-pipelines-build.yml
+      - template: ./azure-pipelines-build.yml
 
   - stage: Deploy
     dependsOn: Build
@@ -19,4 +19,4 @@ stages:
               runOnce:
                 deploy: 
                     steps:
-                    - template: azure-pipelines-deploy.yml
+                    - template: ./azure-pipelines-deploy.yml
